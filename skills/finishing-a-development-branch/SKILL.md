@@ -67,20 +67,14 @@ Which option?
 
 #### Option 1: Merge Locally
 
-```bash
-# Switch to base branch
+Prompt the user with the commands to run:
+
+```
+To merge this branch locally, run:
+
 git checkout <base-branch>
-
-# Pull latest
 git pull
-
-# Merge feature branch
 git merge <feature-branch>
-
-# Verify tests on merged result
-<test command>
-
-# If tests pass
 git branch -d <feature-branch>
 ```
 
@@ -88,19 +82,26 @@ Then: Cleanup worktree (Step 5)
 
 #### Option 2: Push and Create PR
 
-```bash
-# Push branch
-git push -u origin <feature-branch>
+Prompt the user with the changed files, a suggested commit message, and the commands to run:
 
-# Create PR
-gh pr create --title "<title>" --body "$(cat <<'EOF'
-## Summary
+```
+Here's what I suggest for pushing and creating a PR:
+
+**Files changed:**
+- <list each changed file and whether new/modified>
+
+**Suggested commit message:**
+<conventional commit message>
+
+**Commands to run:**
+git add <files>
+git commit -m "<message>"
+git push -u origin <feature-branch>
+gh pr create --title "<title>" --body "## Summary
 <2-3 bullets of what changed>
 
 ## Test Plan
-- [ ] <verification steps>
-EOF
-)"
+- [ ] <verification steps>"
 ```
 
 Then: Cleanup worktree (Step 5)
@@ -125,8 +126,11 @@ Type 'discard' to confirm.
 
 Wait for exact confirmation.
 
-If confirmed:
-```bash
+If confirmed, prompt the user with the commands to run:
+
+```
+To discard this branch, run:
+
 git checkout <base-branch>
 git branch -D <feature-branch>
 ```
@@ -142,8 +146,11 @@ Check if in worktree:
 git worktree list | grep $(git branch --show-current)
 ```
 
-If yes:
-```bash
+If yes, prompt the user:
+
+```
+To clean up the worktree, run:
+
 git worktree remove <worktree-path>
 ```
 
@@ -151,12 +158,12 @@ git worktree remove <worktree-path>
 
 ## Quick Reference
 
-| Option | Merge | Push | Keep Worktree | Cleanup Branch |
-|--------|-------|------|---------------|----------------|
-| 1. Merge locally | ✓ | - | - | ✓ |
-| 2. Create PR | - | ✓ | ✓ | - |
-| 3. Keep as-is | - | - | ✓ | - |
-| 4. Discard | - | - | - | ✓ (force) |
+| Option | Prompts Merge | Prompts Push | Keep Worktree | Prompts Branch Cleanup |
+|--------|--------------|-------------|---------------|----------------------|
+| 1. Merge locally | Yes | - | - | Yes |
+| 2. Create PR | - | Yes | Yes | - |
+| 3. Keep as-is | - | - | Yes | - |
+| 4. Discard | - | - | - | Yes (force) |
 
 ## Common Mistakes
 
